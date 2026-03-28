@@ -13,6 +13,7 @@ import (
 	"sync"
 
 	"github.com/gin-gonic/gin"
+	swag "github.com/swaggo/swag"
 )
 
 type service struct {
@@ -238,7 +239,25 @@ func (s *service) getDocJSON() []byte {
 			}
 		}
 	}
+	if data, ok := s.tryReadRegisteredSwagDocJSON(); ok {
+		return data
+	}
 	return []byte(`{"swagger":"2.0","info":{"title":"API Documentation","version":"v0.0.1"},"paths":{}}`)
+}
+
+func (s *service) tryReadRegisteredSwagDocJSON() ([]byte, bool) {
+	if s.cfg.OpenAPI3 {
+		return nil, false
+	}
+	doc, err := swag.ReadDoc()
+	if err != nil {
+		return nil, false
+	}
+	doc = strings.TrimSpace(doc)
+	if doc == "" {
+		return nil, false
+	}
+	return []byte(doc), true
 }
 
 func (s *service) resolveDocServer(c *gin.Context) docServer {

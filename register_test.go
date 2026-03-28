@@ -3,6 +3,8 @@ package ginknife4j
 import (
 	"strings"
 	"testing"
+
+	swag "github.com/swaggo/swag"
 )
 
 func TestInjectHostSettingsScript(t *testing.T) {
@@ -97,5 +99,32 @@ func TestEnableHostTextBothModesUseOriginOnly(t *testing.T) {
 	hostOnly := buildHostOnlyURL(server)
 	if hostOnly != "https://example.com" {
 		t.Fatalf("enableHostText should be origin only, got %q", hostOnly)
+	}
+}
+
+type testSwaggerDoc struct {
+	doc string
+}
+
+func (t testSwaggerDoc) ReadDoc() string {
+	return t.doc
+}
+
+func TestGetDocJSONReadsRegisteredSwagDoc(t *testing.T) {
+	want := `{"swagger":"2.0","info":{"title":"registered"},"paths":{}}`
+	swag.Register(swag.Name, testSwaggerDoc{doc: want})
+
+	svc := &service{cfg: defaultConfig()}
+	got := string(svc.getDocJSON())
+	if got != want {
+		t.Fatalf("getDocJSON() = %q, want %q", got, want)
+	}
+}
+
+func TestGetDocJSONRegisteredSwagDocSkippedInOpenAPI3Mode(t *testing.T) {
+	svc := &service{cfg: Config{OpenAPI3: true}}
+	got := string(svc.getDocJSON())
+	if strings.Contains(got, "registered") {
+		t.Fatalf("expected openapi3 mode to skip registered swag doc")
 	}
 }
