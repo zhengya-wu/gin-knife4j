@@ -1,0 +1,23 @@
+Third-Party Notices
+===================
+
+This repository embeds third-party frontend assets under `static/` for an out-of-the-box documentation UI experience.
+
+1. Knife4j frontend assets
+   - Scope: bundled files under `static/doc.html` and `static/webjars/`
+   - Upstream project: Knife4j
+   - Website: https://doc.xiaominfo.com/
+   - License: Apache License 2.0
+
+2. Font Awesome webfont compatibility assets
+   - Scope: `static/webjars/fonts/` and `static/webjars/img/fontawesome-webfont.29800836.svg`
+   - Upstream project: Font Awesome
+   - Source used for the compatibility files added in this repository: https://github.com/FortAwesome/Font-Awesome/tree/v4.7.0
+   - Notes: these files are redistributed to satisfy the upstream bundled CSS references used by the embedded UI
+   - License information:
+     - Fonts: SIL OFL 1.1
+     - CSS/code: MIT License
+
+3. Additional bundled frontend dependencies
+   - Some third-party dependency notices are preserved in `static/webjars/js/chunk-vendors.d51cf6f8.js.LICENSE.txt`
+   - When refreshing the bundled frontend assets, keep upstream notices and this file in sync

@@ -1,0 +1,113 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "gin-knife4j 示例 API",
+    "version": "v1.0.0",
+    "description": "用于演示 gin-knife4j 在 Swagger 2 模式下的效果。",
+    "contact": {
+      "name": "zhengya-wu",
+      "email": "zhengya-wu@xxxx.com"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/api/v1",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "获取用户列表",
+        "description": "返回一个简化的用户列表示例。",
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}": {
+      "get": {
+        "tags": [
+          "order"
+        ],
+        "summary": "获取订单详情",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "订单 ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          },
+          "404": {
+            "description": "订单不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "u_1001"
+        },
+        "name": {
+          "type": "string",
+          "example": "Alice"
+        }
+      }
+    },
+    "Order": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "o_20260328"
+        },
+        "status": {
+          "type": "string",
+          "example": "paid"
+        }
+      }
+    }
+  }
+}
